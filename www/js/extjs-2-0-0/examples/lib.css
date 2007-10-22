@@ -1,0 +1,21 @@
+/*
+ * Ext JS Library 2.0 Dev 5
+ * Copyright(c) 2006-2007, Ext JS, LLC.
+ * licensing@extjs.com
+ * 
+ * This code has not yet been licensed for use.
+ */
+
+#lib-bar {
+    position:absolute;
+    top:0;
+    right:10px;
+    z-index:100;
+    visibility:hidden;
+}
+#lib-bar-inner {
+    padding:4px;
+}
+#lib-bar * {
+    font-size:11px;
+}

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<webtop>
+	<section mergeType="merge" id="admin">
+		<subsection mergeType="merge" id="general">
+			<menu id="rbmanagement" label="Resource Bundles">
+				<menuitem id="rbreset" sequence="1" label="Reload Components" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=reset.cfm" />
+				<menuitem id="rbreport" sequence="2" label="Reports" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=report.cfm" />
+				<menuitem id="rbsave" sequence="3" label="Save changes" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=savebundles.cfm" />
+			</menu>
+		</subsection>
+	</section>
+</webtop>
