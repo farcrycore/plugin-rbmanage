@@ -6,7 +6,7 @@
 <!--- set up page header --->
 <admin:header title="Save resource bundles" />
 
-skin:htmlHead library="extjs" />
+<skin:htmlHead library="extjs" />
 <skin:htmlHead><cfoutput>
 	<script type="text/javascript" src="#application.url.farcry#/js/ext/custom/ColumnNodeUI.js"></script>
 	<link type="text/css" rel="stylesheet" href="#application.url.farcry#/js/ext/custom/ColumnNodeUI.css" />
