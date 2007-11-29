@@ -4,7 +4,7 @@
 	<cfset this.title = "Missing Keys Report" />
 	<cfset this.minloglevel = 1 />
 
-	<cffunction name="init" access="public" output="false" returntype="component" hint="Initializes and collates the report">
+	<cffunction name="init" access="public" output="false" returntype="any" hint="Initializes and collates the report">
 		<cfargument name="bundles" type="array" required="true" hint="The bundles to be processed" />
 		<cfargument name="bundlenames" type="string" required="true" hint="The bundle names" />
 		

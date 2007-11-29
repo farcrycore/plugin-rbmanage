@@ -10,7 +10,7 @@
 	
 	<cfset this.changed = false />
 	
-	<cffunction name="init" access="public" output="false" returntype="component" hint="Loads a file into the component">
+	<cffunction name="init" access="public" output="false" returntype="any" hint="Loads a file into the component">
 		<cfargument name="file" type="string" required="true" />
 		
 		<cfset super.init(arguments.file) />

@@ -2,7 +2,7 @@
 	
 	<cfset this.reports = structnew() />
 	
-	<cffunction name="init" access="public" output="false" returntype="component" hint="Initializes component">
+	<cffunction name="init" access="public" output="false" returntype="any" hint="Initializes component">
 		<cfargument name="locales" type="string" required="false" default="" />
 		
 		<cfset var item = "" />
@@ -126,7 +126,7 @@
 		<cfreturn result />
 	</cffunction>
 	
-	<cffunction name="setKeys" access="public" output="true" returntype="struct" hint="Added keys and key groups and returns full list of keys added">
+	<cffunction name="setKeys" access="public" output="false" returntype="struct" hint="Added keys and key groups and returns full list of keys added">
 		<cfargument name="bundle" type="string" required="true" hint="The bundle the keys are to be added to" />
 		<cfargument name="locale" type="string" required="true" hint="The locale resource to update" />
 		<cfargument name="keys" type="query" required="true" hint="Query of keys and values" />
