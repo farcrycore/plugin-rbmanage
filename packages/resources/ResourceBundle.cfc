@@ -306,7 +306,7 @@
 				<cfset resource = resource & "## @comment #comment##chr(13)##chr(10)#" />
 				
 				<!--- Key --->
-				<cfset resource = resource & escape(rbkey) & "=" & escape(this.bundle[rbkey]) & "#chr(13)##chr(10)#" />
+				<cfset resource = resource & escape(rbkey) & "=" & escape(this.bundle[rbkey]) & "#chr(13)##chr(10)##chr(13)##chr(10)#" />
 			</cfoutput>
 		</cfoutput>
 		
@@ -319,6 +319,9 @@
 		
 		<cfset this.changed = false />
 		
+		<cfif not directoryexists(getdirectoryfrompath(this.file))>
+			<cfdirectory action="create" directory="#getdirectoryfrompath(this.file)#" />
+		</cfif>
 		<cffile action="write" charset="utf-8" file="#this.file#" output="#resource#" />
 	</cffunction>
 	

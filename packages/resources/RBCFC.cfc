@@ -6,6 +6,7 @@
 		<cfargument name="locales" type="string" required="false" default="" />
 		
 		<cfset var item = "" />
+		<cfset var thislocale = "" />
 		
 		<cfset super.init(arguments.locales) />
 		
@@ -19,20 +20,31 @@
 			</cfif>
 		</cfloop>
 		
+		<!--- Set up short-circuit bundles - these make sure a resource is only logged once --->
+		<cfset this.stShort = structnew() />
+		<cfloop list="#arguments.locales#" index="thislocale">
+			<cfset this.stShort[thislocale] = structnew() />
+		</cfloop>
+		
 		<cfreturn this />
 	</cffunction>
 	
 	<cffunction name="getResource" access="public" output="false" returntype="string" hint="Returns the resource string">
 		<cfargument name="key" type="string" required="true" />
 		<cfargument name="default" type="string" required="false" default="#arguments.key#" />
-		<cfargument name="locale" type="string" required="false" />
+		<cfargument name="locale" type="string" default="" required="false" />
 		
 		<cfset var i = 0 />
 		
-		<cfif structkeyexists(session,"dmProfile")>
-			<cfparam name="arguments.locale" default="#session.dmProfile.locale#" />
-		<cfelse>
-			<cfparam name="arguments.locale" default="#application.config.general.locale#" />
+		<cfif structkeyexists(session,"dmProfile") and not len(arguments.locale)>
+			<cfset arguments.locale = session.dmProfile.locale />
+		<cfelseif not len(arguments.locale)>
+			<cfset arguments.locale = application.config.general.locale />
+		</cfif>
+		
+		<!--- Check short-circuit struct --->
+		<cfif structkeyexists(this.stShort[arguments.locale],arguments.key)>
+			<cfreturn this.stShort[arguments.locale][arguments.key] />
 		</cfif>
 		
 		<!--- Log levels: 0: none, 1: uses of default value, 2: uses of base resource, 3: all requests --->
@@ -41,20 +53,23 @@
 				<cfif application.stPlugins.rbmanage.loglevel gte application.stPlugins.rbmanage.log_all>
 					<cfset logRequest(arguments.locale,arguments.locale,listgetat(this.lSets,i),arguments.key,arguments.default) />
 				</cfif>
-				<cfreturn this.aSets[i][arguments.locale].bundle[arguments.key] />
+				<cfset this.stShort[arguments.locale][arguments.key] = this.aSets[i][arguments.locale].bundle[arguments.key] />
+				<cfreturn this.stShort[arguments.locale][arguments.key] />
 			</cfif>
 			<cfif structkeyexists(this.aSets[i]["base"].bundle,arguments.key)>
 				<cfif application.stPlugins.rbmanage.loglevel gte application.stPlugins.rbmanage.log_base>
 					<cfset logRequest(arguments.locale,"base",listgetat(this.lSets,i),arguments.key,arguments.default) />
 				</cfif>
-				<cfreturn this.aSets[i]["base"].bundle[arguments.key] />
+				<cfset this.stShort[arguments.locale][arguments.key] = this.aSets[i]["base"].bundle[arguments.key] />
+				<cfreturn this.stShort[arguments.locale][arguments.key] />
 			</cfif>
 		</cfloop>
 		
 		<cfif application.stPlugins.rbmanage.loglevel gte application.stPlugins.rbmanage.log_unfound>
 			<cfset logRequest(arguments.locale,"NA","NA",arguments.key,arguments.default) />
 		</cfif>
-		<cfreturn arguments.default />
+		<cfset this.stShort[arguments.locale][arguments.key] = arguments.default />
+		<cfreturn this.stShort[arguments.locale][arguments.key] />
 	</cffunction>
 
 	<cffunction name="logRequest" access="public" output="false" returntype="void" hint="Logs a resource attempt resource">
@@ -96,17 +111,19 @@
 		<cfreturn structnew() />
 	</cffunction>
 	
-	<cffunction name="getReportJSON" access="public" output="false" returntype="string" hint="Returns a set of branches in JSON format">
+	<cffunction name="getReport" access="public" output="false" returntype="any" hint="Returns a set of branches in JSON format">
 		<cfargument name="report" type="string" required="false" default="" hint="The report required" />
 		<cfargument name="group" type="string" required="false" default="" hint="Key group, e.g. webtop.admin" />
+		<cfargument name="format" type="string" required="false" default="json" hint="json,query" />
 		
-		<cfreturn this.reports[arguments.report].getJSONData(arguments.group) />
+		<cfreturn this.reports[arguments.report].getData(group=arguments.group,format=arguments.format) />
 	</cffunction>
 	
 	<cffunction name="getReportColumns" access="public" output="false" returntype="struct" hint="Returns the columns returned in the JSON string">
 		<cfargument name="report" type="string" required="false" default="" hint="The report required" />
+		<cfargument name="format" type="string" required="false" default="json" hint="json,query" />
 		
-		<cfreturn this.reports[arguments.report].getJSONColumns() />
+		<cfreturn this.reports[arguments.report].getColumns(format=arguments.format) />
 	</cffunction>
 	
 	<cffunction name="getReportTitle" access="public" output="false" returntype="string" hint="Returns the title of a report">

@@ -121,14 +121,21 @@
 		</cfquery>
 	</cffunction>
 
-	<cffunction name="getJSONData" access="public" output="false" returntype="string" hint="Returns a set of branches in JSON format">
+	<cffunction name="getData" access="public" output="false" returntype="any" hint="Returns a set of branches in JSON format">
 		<cfargument name="group" type="string" required="false" default="" hint="Key group, e.g. webtop.admin" />
+		<cfargument name="format" type="string" required="false" default="json" hint="json,query" />
 		
 		<cfset var result = "" />
 		<cfset var item = "" />
 		<cfset var qResult = "" />
 		<cfset var locale = "" />
 		<cfset var thiscollation = this.collation />
+		
+		<cfset var index = 0 />
+		<cfset var value = structnew() />
+		<cfset var sendback = arraynew(1) />
+		
+		<cfimport taglib="/farcry/core/tags/misc" prefix="misc" />
 		
 		<cfquery dbtype="query" name="qResult">
 			select	distinct *
@@ -139,33 +146,73 @@
 			order by	haschildren,label
 		</cfquery>
 		
-		<cfloop query="qResult">
-			<cfif len(arguments.group) lt len(rbkey) and not refind("(\.|@)",mid(rbkey,len(arguments.group)+2,len(rbkey)))>
-				<cfset item = "{ 'uiProvider':'col', 'id':'#rbkey#', 'text':'#label#', 'value':'#value#', 'total':#total#, 'leaf':" />
-				<cfif haschildren>
-					<cfset item = item & "false" />
-				<cfelse>
-					<cfset item = item & "true" />
-				</cfif>
-				<cfset item = item & " }" />
-				
-				<cfset result = listappend(result,item) />
+		<misc:map values="#qResult#" result="qResult">
+			<cfif len(arguments.group) lt len(value.rbkey) and not refind("(\.|@)",mid(value.rbkey,len(arguments.group)+2,len(value.rbkey)))>
+				<cfset sendback[1] = value />
 			</cfif>
-		</cfloop>
+		</misc:map>
 		
-		<cfset result = "[" & result & "]" />
+		<cfswitch expression="#arguments.format#">
+			<cfcase value="query">
+				<cfset result = qResult />
+			</cfcase>
+			
+			<cfcase value="json">
+				<cfloop query="qResult">
+					<cfif len(arguments.group) lt len(rbkey) and not refind("(\.|@)",mid(rbkey,len(arguments.group)+2,len(rbkey)))>
+						<cfset item = "{ 'uiProvider':'col', 'id':'#rbkey#', 'text':'#label#', 'value':'#value#', 'total':#total#, 'leaf':" />
+						<cfif haschildren>
+							<cfset item = item & "false" />
+						<cfelse>
+							<cfset item = item & "true" />
+						</cfif>
+						<cfset item = item & " }" />
+						
+						<cfset result = listappend(result,item) />
+					</cfif>
+				</cfloop>
+				
+				<cfset result = "[" & result & "]" />
+			</cfcase>
+		</cfswitch>
 		
 		<cfreturn result />
 	</cffunction>
 
-	<cffunction name="getJSONColumns" access="public" output="false" returntype="struct" hint="Returns a JSON string describing the columns the JSON includes">
-		<cfset var stResult = structnew() />
+	<cffunction name="getColumns" access="public" output="false" returntype="struct" hint="Returns a JSON string describing the columns the JSON includes">
+		<cfargument name="format" type="string" required="false" default="json" hint="json,query" />
 		
-		<cfset stResult.json = "" />
-		<cfset stResult.json = listappend(stResult.json,"{ 'header' : 'Key', 'width' : 300, 'dataIndex' : 'text' }") />
-		<cfset stResult.json = listappend(stResult.json,"{ 'header' : 'Value', 'width' : 100, 'dataIndex' : 'value' }") />
-		<cfset stResult.json = listappend(stResult.json,"{ 'header' : 'Total', 'width' : 75, 'dataIndex' : 'total' }") />
-		<cfset stResult.json = "[" & stResult.json & "]" />
+		<cfset var stResult = structnew() />
+		<cfset var qColumns = querynew("header,width,dataIndex","varchar,integer,varchar") />
+		
+		<cfset queryaddrow(qColumns) />
+		<cfset querysetcell(qColumns,"header",'Key') />
+		<cfset querysetcell(qColumns,"width",300) />
+		<cfset querysetcell(qColumns,"dataIndex",'label') />
+		
+		<cfset queryaddrow(qColumns) />
+		<cfset querysetcell(qColumns,"header",'Value') />
+		<cfset querysetcell(qColumns,"width",100) />
+		<cfset querysetcell(qColumns,"dataIndex",'value') />
+		
+		<cfset queryaddrow(qColumns) />
+		<cfset querysetcell(qColumns,"header",'Total') />
+		<cfset querysetcell(qColumns,"width",75) />
+		<cfset querysetcell(qColumns,"dataIndex",'total') />
+		
+		<cfswitch expression="#arguments.format#">
+			<cfcase value="query">
+				<cfset stResult.columns = qColumns />
+			</cfcase>
+			
+			<cfcase value="json">
+				<cfset stResult.columns = "" />
+				<cfloop query="qColumns">
+					<cfset stResult.columns = listappend(stResult.columns,"{ 'header' : '#qColumns.header#', 'width' : #qColumns.width#, 'dataIndex' : '#qColumns.dataIndex#' }") />
+				</cfloop>
+				<cfset stResult.json = "[" & stResult.json & "]" />
+			</cfcase>
+		</cfswitch>
 		
 		<cfset stResult.width = 475 />
 		

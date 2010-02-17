@@ -3,9 +3,9 @@
 	<section mergeType="merge" id="admin">
 		<subsection mergeType="merge" id="general">
 			<menu id="rbmanagement" label="Resource Bundles">
-				<menuitem id="rbreset" sequence="1" label="Reload Components" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=reset.cfm" />
-				<menuitem id="rbreport" sequence="2" label="Reports" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=report.cfm" />
-				<menuitem id="rbsave" sequence="3" label="Save changes" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=savebundles.cfm" />
+				<menuitem sequence="1" id="rbreset" label="Reload Components" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=utilities/reset.cfm" />
+				<menuitem sequence="2" id="rbreport" label="Reports" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=utilities/report.cfm" />
+				<menuitem sequence="3" id="rbsave" label="Save changes" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=utilities/savebundles.cfm" />
 			</menu>
 		</subsection>
 	</section>
