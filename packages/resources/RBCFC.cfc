@@ -163,6 +163,14 @@
 		<cfreturn stResult />
 	</cffunction>
 	
+	<cffunction name="getCurrentKeys" access="public" output="false" returntype="query" hint="Returns a key-value query for a particular bundle">
+		<cfargument name="location" type="string" required="true" hint="The location to get the keys from" />
+		<cfargument name="locale" type="string" required="false" default="base" hint="The locale to retrieve" />
+		<cfargument name="keys" type="string" required="false" default="" hint="A list of the keys being requested" />
+		
+		<cfreturn this.aSets[listfind(this.lSets,arguments.location)][arguments.locale].getKeys(arguments.keys) />
+	</cffunction>
+	
 	<cffunction name="getKeys" access="public" output="false" returntype="query" hint="Returns a key-value query for a particular report">
 		<cfargument name="report" type="string" required="true" hint="The report being queried" />
 		<cfargument name="keys" type="string" required="true" hint="A list of the keys being requested" />

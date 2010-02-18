@@ -255,6 +255,38 @@
 		<cfreturn updates />
 	</cffunction>
 	
+	<cffunction name="getKeys" access="public" output="false" returntype="query" hint="Returns a query containing the requested keys and their default values">
+		<cfargument name="keys" type="string" required="false" default="" hint="List of keys / key groups" />
+		
+		<cfset var qKeys = querynew("key,value","varchar,varchar") />
+		
+		<cfif len(arguments.keys)>
+			<cfloop list="#arguments.keys#" index="thiskey">
+				<cfquery dbtype="query" name="qKeys">
+					select	[key], [value]
+					from	qKeys
+					
+					UNION
+					
+					select	rbkey as [key], '' as [value]
+					from	this.metadata
+					where	rbkey like '#thiskey#%'
+				</cfquery>
+			</cfloop>
+		<cfelse>
+			<cfquery dbtype="query" name="qKeys">
+				select	rbkey as [key], '' as [value]
+				from	this.metadata
+			</cfquery>
+		</cfif>
+		
+		<cfloop query="qKeys">
+			<cfset querysetcell(qKeys,'value',this.bundle[key],qKeys.currentrow) />
+		</cfloop>
+		
+		<cfreturn qKeys />
+	</cffunction>
+	
 	<cffunction name="setTranslated" access="public" output="false" returntype="void" hint="Sets translated flag for specified keys">
 		<cfargument name="keys" type="string" required="true" hint="The keys to update" />
 		<cfargument name="translated" type="boolean" required="true" hint="The value to set the translated flag to" />
@@ -263,9 +295,11 @@
 		<cfset var stMetadata = structnew() />
 		
 		<cfloop list='#arguments.keys#' index="item">
-			<cfset stMetadata = getKeyMetadata(item) />
-			<cfset stMetadata.translated = arguments.translated />
-			<cfset this.metadata = addMetadata(this.metadata,stMetadata) />
+			<cfif structkeyexists(this.bundle,item)>
+				<cfset stMetadata = getKeyMetadata(item) />
+				<cfset stMetadata.translated = arguments.translated />
+				<cfset this.metadata = addMetadata(this.metadata,stMetadata) />
+			</cfif>
 		</cfloop>
 		
 	</cffunction>

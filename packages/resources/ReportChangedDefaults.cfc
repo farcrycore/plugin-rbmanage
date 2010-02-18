@@ -133,7 +133,7 @@
 		
 		<cfset queryaddrow(qColumns) />
 		<cfset querysetcell(qColumns,"header",'Key') />
-		<cfset querysetcell(qColumns,"width",300) />
+		<cfset querysetcell(qColumns,"width",150) />
 		<cfset querysetcell(qColumns,"dataIndex",'label') />
 		
 		<cfset queryaddrow(qColumns) />
@@ -165,7 +165,7 @@
 			</cfcase>
 		</cfswitch>
 		
-		<cfset stResult.width = 575 />
+		<cfset stResult.width = 425 />
 		
 		<cfreturn stResult />
 	</cffunction>
