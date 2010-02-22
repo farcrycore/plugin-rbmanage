@@ -4,8 +4,9 @@
 		<cfset var o = "" />
 		<cfset var thisplugin = "" />
 		<cfset var thislocale = "" />
-		<cfset var locales = application.i18nUtils.getLocales() />
-		<cfset var localeNames = application.i18nUtils.getLocaleNames() />
+		<cfset var i18nUtils = createobject("component","farcry.core.packages.farcry.i18nUtil") />
+		<cfset var locales = i18nUtils.getLocales() />
+		<cfset var localeNames = i18nUtils.getLocaleNames() />
 		
 		<!--- Initialise locations --->
 		<cfset this.qLocations = querynew("value,name") />

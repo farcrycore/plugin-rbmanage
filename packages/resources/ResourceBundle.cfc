@@ -356,7 +356,8 @@
 		<cfif not directoryexists(getdirectoryfrompath(this.file))>
 			<cfdirectory action="create" directory="#getdirectoryfrompath(this.file)#" />
 		</cfif>
-		<cffile action="write" charset="utf-8" file="#this.file#" output="#resource#" />
+		
+		<cffile action="write" charset="iso-8859-1" file="#this.file#" output="#resource#" />
 	</cffunction>
 	
 	<!--- ========= METADATA PARSING ========== --->
