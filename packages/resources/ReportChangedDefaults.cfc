@@ -133,22 +133,22 @@
 		
 		<cfset queryaddrow(qColumns) />
 		<cfset querysetcell(qColumns,"header",'Key') />
-		<cfset querysetcell(qColumns,"width",150) />
+		<cfset querysetcell(qColumns,"width",180) />
 		<cfset querysetcell(qColumns,"dataIndex",'label') />
 		
 		<cfset queryaddrow(qColumns) />
 		<cfset querysetcell(qColumns,"header",'Current default') />
-		<cfset querysetcell(qColumns,"width",100) />
+		<cfset querysetcell(qColumns,"width",130) />
 		<cfset querysetcell(qColumns,"dataIndex",'currentdefault') />
 		
 		<cfset queryaddrow(qColumns) />
 		<cfset querysetcell(qColumns,"header",'New default') />
-		<cfset querysetcell(qColumns,"width",100) />
+		<cfset querysetcell(qColumns,"width",130) />
 		<cfset querysetcell(qColumns,"dataIndex",'newdefault') />
 		
 		<cfset queryaddrow(qColumns) />
 		<cfset querysetcell(qColumns,"header",'Total') />
-		<cfset querysetcell(qColumns,"width",75) />
+		<cfset querysetcell(qColumns,"width",105) />
 		<cfset querysetcell(qColumns,"dataIndex",'total') />
 		
 		<cfswitch expression="#arguments.format#">
@@ -165,7 +165,7 @@
 			</cfcase>
 		</cfswitch>
 		
-		<cfset stResult.width = 425 />
+		<cfset stResult.width = 545 />
 		
 		<cfreturn stResult />
 	</cffunction>

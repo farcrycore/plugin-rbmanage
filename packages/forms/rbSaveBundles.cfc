@@ -16,9 +16,9 @@
 		<cfimport taglib="/farcry/core/tags/webskin" prefix="skin" />
 		
 		<skin:loadJS id="jquery" />
-		<skin:loadJS id="jquery-treeTable" basehref="#application.url.webroot#/rbmanage/treeTable/javascripts/" lFiles="jquery.treeTable.js" />
-		<skin:loadCSS id="jquery-treeTable" basehref="#application.url.webroot#/rbmanage/treeTable/stylesheets/" lFiles="jquery.treeTable.css" />
-		<skin:htmlHead><cfoutput>
+		<skin:loadJS id="jquery-treeTable" basehref="/farcry/plugins/rbmanage/www/treeTable/javascripts/" lFiles="jquery.treeTable.js" />
+		<skin:loadCSS id="jquery-treeTable" basehref="/farcry/plugins/rbmanage/www/treeTable/stylesheets/" lFiles="jquery.treeTable.css" />
+ 		<skin:htmlHead><cfoutput>
 			<style type="text/css">
 				##tree { width:250px; }
 					.select-header, .select-value { padding-left:20px; }
@@ -77,10 +77,10 @@
 				</tbody>
 			</table>
 			<script language="javascript">
-				$("##tree").treeTable();
+				$j("##tree").treeTable();
 				<cfif not structkeyexists(arguments.stMetadata,"ajaxrequest") or not arguments.stMetadata.ajaxrequest>
 					// Make visible that a row is clicked
-					$("input[name=keys]").live("change",function() {
+					$j("input[name=keys]").live("change",function() {
 						var fn = (this.checked ? "addClass" : "removeClass");
 						var nodes =  [ $j(this).parents("tr.ui-widget-content")[fn]("checked") ];
 						

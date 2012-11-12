@@ -156,18 +156,18 @@
 		
 		<cfset queryaddrow(qColumns) />
 		<cfset querysetcell(qColumns,"header",'Key') />
-		<cfset querysetcell(qColumns,"width",150) />
+		<cfset querysetcell(qColumns,"width",180) />
 		<cfset querysetcell(qColumns,"dataIndex",'label') />
 		
 		<cfset queryaddrow(qColumns) />
 		<cfset querysetcell(qColumns,"header",'Base') />
-		<cfset querysetcell(qColumns,"width",75) />
+		<cfset querysetcell(qColumns,"width",105) />
 		<cfset querysetcell(qColumns,"dataIndex",'base') />
 		
 		<cfloop list="#application.locales#" index="locale">
 			<cfset queryaddrow(qColumns) />
 			<cfset querysetcell(qColumns,"header",locale) />
-			<cfset querysetcell(qColumns,"width",75) />
+			<cfset querysetcell(qColumns,"width",85) />
 			<cfset querysetcell(qColumns,"dataIndex",locale) />
 		</cfloop>
 		
@@ -185,7 +185,7 @@
 			</cfcase>
 		</cfswitch>
 		
-		<cfset stResult.width = 325 + listlen(application.locales)*75 />
+		<cfset stResult.width = 385 + listlen(application.locales)*85 />
 		
 		<cfreturn stResult />
 	</cffunction>

@@ -32,12 +32,14 @@
 		<cfset var html = "" />
 		<cfset var stCols = application.rb.getReportColumns(report=arguments.stObject.report,format='query') />
 		
+		<cfsetting requesttimeout="10000" />
+		
 		<cfimport taglib="/farcry/core/tags/webskin" prefix="skin" />
 		
 		<skin:loadJS id="jquery" />
-		<skin:loadJS id="jquery-treeTable" basehref="#application.url.webroot#/rbmanage/treeTable/javascripts/" lFiles="jquery.treeTable.js" />
-		<skin:loadCSS id="jquery-treeTable" basehref="#application.url.webroot#/rbmanage/treeTable/stylesheets/" lFiles="jquery.treeTable.css" />
-		<skin:htmlHead><cfoutput>
+		<skin:loadJS id="jquery-treeTable" basehref="/farcry/plugins/rbmanage/www/treeTable/javascripts/" lFiles="jquery.treeTable.js" />
+		<skin:loadCSS id="jquery-treeTable" basehref="/farcry/plugins/rbmanage/www/treeTable/stylesheets/" lFiles="jquery.treeTable.css" />
+ 		<skin:htmlHead><cfoutput>
 			<style type="text/css">
 				##tree { width:#stCols.width+16#px; }
 					td.icon-value { padding-left:20px; }
@@ -62,10 +64,10 @@
 				<tbody>#outputResults(stCols=stCols,report=arguments.stObject.report,fieldname=arguments.fieldname)#</tbody>
 			</table>
 			<script language="javascript">
-				$("##tree").treeTable();
+				$j("##tree").treeTable();
 				<cfif not structkeyexists(arguments.stMetadata,"ajaxrequest") or not arguments.stMetadata.ajaxrequest>
 					// Make visible that a row is clicked
-					$("input[name=keys]").live("change",function() {
+					$j("input[name=keys]").live("change",function() {
 						var fn = (this.checked ? "addClass" : "removeClass");
 						var nodes =  [ $j(this).parents("tr.ui-widget-content")[fn]("checked") ];
 						
