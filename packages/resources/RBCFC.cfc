@@ -36,7 +36,7 @@
 		
 		<cfset var i = 0 />
 		
-		<cfif structkeyexists(session,"dmProfile") and not len(arguments.locale)>
+		<cfif isdefined("session.dmProfile") and not len(arguments.locale)>
 			<cfset arguments.locale = session.dmProfile.locale />
 		<cfelseif not len(arguments.locale)>
 			<cfset arguments.locale = application.config.general.locale />
@@ -93,7 +93,7 @@
 		
 		<cfset var i = 0 />
 		
-		<cfif structkeyexists(session,"dmProfile")>
+		<cfif isdefined("session.dmProfile")>
 			<cfparam name="arguments.locale" default="#session.dmProfile.locale#" />
 		<cfelse>
 			<cfparam name="arguments.locale" default="#application.config.general.locale#" />

@@ -7,6 +7,7 @@
 				<menuitem sequence="20" id="rbreport" label="Reports" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=utilities/report.cfm" />
 				<menuitem sequence="30" id="rbgoogletranslate" label="Google Translate" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=utilities/googletranslate.cfm" />
 				<menuitem sequence="40" id="rbsave" label="Save changes" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=utilities/savebundles.cfm" />
+				<menuitem sequence="50" id="rbwalk" label="Walk Resources" link="/admin/customadmin.cfm?plugin=rbmanage&amp;module=utilities/walkresources.cfm" />
 			</menu>
 		</subsection>
 	</section>
